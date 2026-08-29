@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pip & Pogo Studio</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--ink:#182033;--muted:#6c7485;--accent:#6c5ce7;--line:#e8eaf1}
+*{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}
+.app{display:flex;min-height:100vh}.side{width:245px;background:#17152b;color:#fff;padding:24px 16px;position:fixed;inset:0 auto 0 0}
+.logo{font-size:21px;font-weight:800;padding:8px 12px 28px}.logo span{color:#a99cff}
+.nav button{display:block;width:100%;border:0;background:transparent;color:#c8c6d8;text-align:left;padding:13px 14px;border-radius:12px;margin:4px 0;font-size:14px}
+.nav button.active{background:#2a2745;color:#fff}.main{margin-left:245px;width:calc(100% - 245px);padding:28px 34px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px}.top h1{margin:0;font-size:28px}
+.pill{background:#ece9ff;color:#5546c7;padding:8px 12px;border-radius:999px;font-size:12px;font-weight:700}
+.page{display:none}.page.active{display:block}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 6px 22px #1d21400a}
+.hero{grid-column:1/-1;background:linear-gradient(135deg,#fff,#f0edff);padding:28px}.muted{color:var(--muted);font-size:13px}
+.btn{border:0;border-radius:11px;padding:11px 16px;font-weight:700;background:var(--accent);color:#fff}
+.btn.secondary{background:#eeeef5;color:#33394a}.btn:disabled{opacity:.55}.actions{display:flex;gap:10px;flex-wrap:wrap}
+.field{margin:14px 0}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
+.field input,.field textarea,.field select{width:100%;padding:12px;border:1px solid var(--line);border-radius:11px;font:inherit;background:#fff}
+.field textarea{min-height:130px}.scene{display:grid;grid-template-columns:160px 1fr;gap:14px;align-items:center;margin:12px 0}
+.thumb{height:120px;border-radius:12px;background:#eee9ff;display:grid;place-items:center;font-size:30px;overflow:hidden}.thumb img{width:100%;height:100%;object-fit:cover}
+.status{font-size:12px;color:#6b7280;margin-top:5px}.toast{position:fixed;right:20px;bottom:20px;background:#17152b;color:white;padding:13px 17px;border-radius:12px;display:none}
+.error{margin-top:12px;padding:12px;border-radius:10px;background:#fff0f0;color:#a02b2b;display:none}
+@media(max-width:850px){.side{width:72px}.logo{font-size:0}.logo:first-letter{font-size:22px}.nav button{font-size:0;text-align:center}.main{margin-left:72px;width:calc(100% - 72px);padding:20px}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side">
+  <div class="logo">🐾 <span>Pip & Pogo</span></div>
+  <div class="nav">
+    <button class="active" onclick="show('home',this)">🏠 Dashboard</button>
+    <button onclick="show('characters',this)">🐾 Characters</button>
+    <button onclick="show('story',this)">✍️ Story</button>
+    <button onclick="show('scenes',this)">🎬 Scenes</button>
+    <button onclick="show('voices',this)">🎙️ Voices</button>
+    <button onclick="show('video',this)">🎞️ Video</button>
+  </div>
+</aside>
+
+<main class="main">
+<div class="top"><h1 id="title">Dashboard</h1><span class="pill">Pip & Pogo Studio • AI connected</span></div>
+
+<section id="home" class="page active">
+  <div class="grid">
+    <div class="card hero"><h2>Make a cartoon episode ✨</h2><p class="muted">Create a story idea, let AI turn it into five scenes, then continue to images, voices, and video.</p><button class="btn" onclick="show('story')">Create a story</button></div>
+    <div class="card"><h3>🐾 Characters</h3><strong>Pip & Pogo</strong></div>
+    <div class="card"><h3>🎬 Storyboard</h3><strong>5 AI scenes</strong></div>
+    <div class="card"><h3>🤖 AI</h3><strong>OpenAI via Cloudflare</strong></div>
+  </div>
+</section>
+
+<section id="characters" class="page">
+  <div class="grid">
+    <div class="card"><h3>🐶 Pip</h3><p class="muted">A cheerful, curious cartoon puppy who loves adventures.</p></div>
+    <div class="card"><h3>🐻 Pogo</h3><p class="muted">A funny, kind cartoon bear who is always ready to help Pip.</p></div>
+  </div>
+</section>
+
+<section id="story" class="page">
+  <div class="card">
+    <h2>AI Story Creator</h2>
+    <p class="muted">Describe an episode and AI will create five kid-friendly cartoon scenes.</p>
+    <div class="field"><label>Episode title</label><input id="episodeTitle" value="Pip & Pogo and the Mysterious Box"></div>
+    <div class="field"><label>Your story idea</label><textarea id="storyText">Pip and Pogo go to the park. They discover a mysterious box under a tree. They open it together and find a funny surprise inside.</textarea></div>
+    <div class="actions">
+      <button id="generateBtn" class="btn" onclick="generateAIStory()">✨ Generate 5 AI scenes</button>
+      <button class="btn secondary" onclick="toast('Draft saved')">Save draft</button>
+    </div>
+    <div id="apiError" class="error"></div>
+  </div>
+</section>
+
+<section id="scenes" class="page">
+  <div class="card"><h2>Storyboard</h2><p class="muted">These scenes are generated from your story idea.</p><div id="sceneList"></div></div>
+</section>
+
+<section id="voices" class="page">
+  <div class="card"><h2>Character Voices</h2><p class="muted">Voice generation will be connected next.</p></div>
+</section>
+
+<section id="video" class="page">
+  <div class="card"><h2>Video Timeline</h2><p class="muted">Image, voice, and animation generation will be connected after the story workflow is tested.</p></div>
+</section>
+</main>
+</div>
+<div id="toast" class="toast"></div>
+
+<script>
+const API_URL="https://pip-pogo-api.musadiq-ariz.workers.dev";
+const titles={home:"Dashboard",characters:"Characters",story:"Story Creator",scenes:"Storyboard",voices:"Voices",video:"Video Timeline"};
+let scenes=[
+"Scene 1: Pip and Pogo walk into the sunny park.",
+"Scene 2: They notice a mysterious box underneath a big tree.",
+"Scene 3: Pip and Pogo carefully open the box together.",
+"Scene 4: A funny surprise jumps out and makes them laugh.",
+"Scene 5: The friends head home happily after their adventure."
+];
+let sceneImages=[null,null,null,null,null];
+
+function show(id,btn){
+  document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  document.getElementById("title").textContent=titles[id];
+  document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));
+  if(btn)btn.classList.add("active");
+  if(id==="scenes")renderScenes();
+}
+
+function renderScenes(){
+  document.getElementById("sceneList").innerHTML=scenes.map((s,i)=>`
+    <div class="card scene">
+      <div class="thumb" id="thumb-${i}">
+        ${sceneImages[i] ? `<img src="${sceneImages[i]}" alt="Scene ${i+1} cartoon image">` : ["🌳","🐦","✨","🌲","🎵"][i]}
+      </div>
+      <div>
+        <h3>Scene ${i+1}</h3>
+        <div>${escapeHtml(s.replace(/^Scene\\s*\\d+\\s*:\\s*/i,""))}</div>
+        <div class="status" id="status-${i}">${sceneImages[i] ? "AI image ready" : "Ready for image generation"}</div>
+        <div class="actions" style="margin-top:10px">
+          <button class="btn" id="imgBtn-${i}" onclick="generateSceneImage(${i})">
+            ${sceneImages[i] ? "🎨 Regenerate image" : "🎨 Generate image"}
+          </button>
+        </div>
+      </div>
+    </div>`).join("");
+}
+
+async function generateSceneImage(i){
+  const btn=document.getElementById(`imgBtn-${i}`);
+  const status=document.getElementById(`status-${i}`);
+  const thumb=document.getElementById(`thumb-${i}`);
+  btn.disabled=true;
+  btn.textContent="🎨 Generating...";
+  status.textContent="Creating AI cartoon image...";
+
+  try{
+    const r=await fetch(API_URL,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({action:"image",scene:scenes[i]})
+    });
+
+    const data=await r.json();
+    if(!r.ok) throw new Error(data?.error?.message || "Image generation failed");
+    if(!data.image) throw new Error("No image returned");
+
+    sceneImages[i]=data.image;
+    thumb.innerHTML=`<img src="${data.image}" alt="Scene ${i+1} cartoon image">`;
+    status.textContent="AI image ready";
+    btn.textContent="🎨 Regenerate image";
+    toast(`Scene ${i+1} image created!`);
+  }catch(e){
+    status.textContent="Image generation failed";
+    alert("Image error: "+e.message);
+    btn.textContent="🎨 Generate image";
+  }finally{
+    btn.disabled=false;
+  }
+}
+
+function extractText(data){
+  if(data.output_text) return data.output_text;
+  if(Array.isArray(data.output)){
+    return data.output.flatMap(item=>Array.isArray(item.content)?item.content:[])
+      .map(c=>c.text||c.output_text||"").filter(Boolean).join("\\n");
+  }
+  return "";
+}
+
+async function generateAIStory(){
+  const btn=document.getElementById("generateBtn");
+  const err=document.getElementById("apiError");
+  const idea=document.getElementById("storyText").value.trim();
+  const title=document.getElementById("episodeTitle").value.trim();
+  if(!idea){toast("Please enter a story idea");return}
+
+  btn.disabled=true;
+  btn.textContent="✨ Generating...";
+  err.style.display="none";
+
+  try{
+    const prompt=`Episode title: ${title}. Story idea: ${idea}
+Return exactly 5 short cartoon scene descriptions for children.
+Put each scene on its own line in this exact format:
+Scene 1: ...
+Scene 2: ...
+Scene 3: ...
+Scene 4: ...
+Scene 5: ...
+Do not add any other text.`;
+
+    const r=await fetch(API_URL,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({prompt})
+    });
+
+    const data=await r.json();
+    if(!r.ok) throw new Error(data?.error?.message || "API request failed");
+
+    const text=extractText(data);
+    const found=text.split(/\n+/).map(x=>x.trim()).filter(x=>/^Scene\s*[1-5]\s*:/i.test(x));
+    if(found.length<5) throw new Error("AI responded, but the 5 scenes could not be read.");
+
+    scenes=found.slice(0,5);
+    sceneImages=[null,null,null,null,null];
+    renderScenes();
+    show("scenes");
+    toast("5 AI scenes generated!");
+  }catch(e){
+    err.textContent="AI error: "+e.message;
+    err.style.display="block";
+  }finally{
+    btn.disabled=false;
+    btn.textContent="✨ Generate 5 AI scenes";
+  }
+}
+
+function escapeHtml(s){
+  const div=document.createElement("div");
+  div.textContent=s;
+  return div.innerHTML;
+}
+function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.style.display="block";clearTimeout(window.tt);window.tt=setTimeout(()=>t.style.display="none",2500)}
+renderScenes();
+</script>
+</body>
+</html>
