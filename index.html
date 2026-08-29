@@ -5,66 +5,178 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Pip & Pogo Studio</title>
 <style>
-:root{--bg:#f6f7fb;--card:#fff;--ink:#182033;--muted:#6c7485;--accent:#6c5ce7;--accent2:#8f7cf5;--line:#e8eaf1}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}
-.app{display:flex;min-height:100vh}.side{width:245px;background:#17152b;color:#fff;padding:24px 16px;position:fixed;inset:0 auto 0 0}.logo{font-size:21px;font-weight:800;padding:8px 12px 28px}.logo span{color:#a99cff}.nav button{display:block;width:100%;border:0;background:transparent;color:#c8c6d8;text-align:left;padding:13px 14px;border-radius:12px;margin:4px 0;font-size:14px;cursor:pointer}.nav button.active,.nav button:hover{background:#2a2745;color:#fff}.main{margin-left:245px;width:calc(100% - 245px);padding:28px 34px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px}.top h1{margin:0;font-size:28px}.pill{background:#ece9ff;color:#5546c7;padding:8px 12px;border-radius:999px;font-size:12px;font-weight:700}
-.page{display:none}.page.active{display:block}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 6px 22px #1d21400a}.hero{grid-column:1/-1;background:linear-gradient(135deg,#fff,#f0edff);padding:28px}.hero h2{font-size:30px;margin:0 0 8px}.hero p{color:var(--muted);max-width:650px}.btn{border:0;border-radius:11px;padding:11px 16px;font-weight:700;cursor:pointer;background:var(--accent);color:#fff}.btn.secondary{background:#eeeef5;color:#33394a}.btn.small{padding:8px 11px;font-size:12px}.actions{display:flex;gap:10px;flex-wrap:wrap}.character{display:flex;gap:15px;align-items:center}.avatar{width:76px;height:76px;border-radius:22px;background:#eee9ff;display:grid;place-items:center;font-size:42px}.muted{color:var(--muted);font-size:13px}.field{margin:14px 0}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}.field input,.field textarea,.field select{width:100%;padding:12px;border:1px solid var(--line);border-radius:11px;font:inherit;background:#fff}.field textarea{min-height:130px;resize:vertical}.scene{display:grid;grid-template-columns:150px 1fr auto;gap:16px;align-items:center}.thumb{height:92px;border-radius:12px;background:linear-gradient(135deg,#dcd7ff,#f6d8c7);display:grid;place-items:center;font-size:32px}.scene h3{margin:0 0 5px}.timeline{display:flex;gap:10px;overflow:auto;padding-bottom:8px}.clip{min-width:160px;height:90px;border-radius:12px;background:#ddd8ff;padding:12px;font-weight:700}.status{font-size:12px;color:#6b7280;margin-top:6px}.toast{position:fixed;right:24px;bottom:24px;background:#17152b;color:white;padding:13px 17px;border-radius:12px;display:none;box-shadow:0 10px 30px #0003}
-@media(max-width:850px){.side{width:72px}.logo{font-size:0}.logo:first-letter{font-size:22px}.nav button{font-size:0;text-align:center}.nav button::first-letter{font-size:20px}.main{margin-left:72px;width:calc(100% - 72px);padding:20px}.grid{grid-template-columns:1fr}.scene{grid-template-columns:90px 1fr}.scene .actions{grid-column:2}}
+:root{--bg:#f6f7fb;--card:#fff;--ink:#182033;--muted:#6c7485;--accent:#6c5ce7;--line:#e8eaf1}
+*{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}
+.app{display:flex;min-height:100vh}.side{width:245px;background:#17152b;color:#fff;padding:24px 16px;position:fixed;inset:0 auto 0 0}
+.logo{font-size:21px;font-weight:800;padding:8px 12px 28px}.logo span{color:#a99cff}
+.nav button{display:block;width:100%;border:0;background:transparent;color:#c8c6d8;text-align:left;padding:13px 14px;border-radius:12px;margin:4px 0;font-size:14px}
+.nav button.active{background:#2a2745;color:#fff}.main{margin-left:245px;width:calc(100% - 245px);padding:28px 34px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px}.top h1{margin:0;font-size:28px}
+.pill{background:#ece9ff;color:#5546c7;padding:8px 12px;border-radius:999px;font-size:12px;font-weight:700}
+.page{display:none}.page.active{display:block}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 6px 22px #1d21400a}
+.hero{grid-column:1/-1;background:linear-gradient(135deg,#fff,#f0edff);padding:28px}.muted{color:var(--muted);font-size:13px}
+.btn{border:0;border-radius:11px;padding:11px 16px;font-weight:700;background:var(--accent);color:#fff}
+.btn.secondary{background:#eeeef5;color:#33394a}.btn:disabled{opacity:.55}.actions{display:flex;gap:10px;flex-wrap:wrap}
+.field{margin:14px 0}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
+.field input,.field textarea,.field select{width:100%;padding:12px;border:1px solid var(--line);border-radius:11px;font:inherit;background:#fff}
+.field textarea{min-height:130px}.scene{display:grid;grid-template-columns:90px 1fr;gap:14px;align-items:center;margin:12px 0}
+.thumb{height:76px;border-radius:12px;background:#eee9ff;display:grid;place-items:center;font-size:30px}
+.status{font-size:12px;color:#6b7280;margin-top:5px}.toast{position:fixed;right:20px;bottom:20px;background:#17152b;color:white;padding:13px 17px;border-radius:12px;display:none}
+.error{margin-top:12px;padding:12px;border-radius:10px;background:#fff0f0;color:#a02b2b;display:none}
+@media(max-width:850px){.side{width:72px}.logo{font-size:0}.logo:first-letter{font-size:22px}.nav button{font-size:0;text-align:center}.main{margin-left:72px;width:calc(100% - 72px);padding:20px}.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="app">
-<aside class="side"><div class="logo">🐾 <span>Pip & Pogo</span></div>
-<div class="nav">
-<button class="active" onclick="show('home',this)">🏠 Dashboard</button>
-<button onclick="show('characters',this)">🐾 Characters</button>
-<button onclick="show('story',this)">✍️ Story</button>
-<button onclick="show('scenes',this)">🎬 Scenes</button>
-<button onclick="show('voices',this)">🎙️ Voices</button>
-<button onclick="show('video',this)">🎞️ Video</button>
-</div></aside>
+<aside class="side">
+  <div class="logo">🐾 <span>Pip & Pogo</span></div>
+  <div class="nav">
+    <button class="active" onclick="show('home',this)">🏠 Dashboard</button>
+    <button onclick="show('characters',this)">🐾 Characters</button>
+    <button onclick="show('story',this)">✍️ Story</button>
+    <button onclick="show('scenes',this)">🎬 Scenes</button>
+    <button onclick="show('voices',this)">🎙️ Voices</button>
+    <button onclick="show('video',this)">🎞️ Video</button>
+  </div>
+</aside>
+
 <main class="main">
-<div class="top"><h1 id="title">Dashboard</h1><span class="pill">Pip & Pogo Studio • Prototype</span></div>
+<div class="top"><h1 id="title">Dashboard</h1><span class="pill">Pip & Pogo Studio • AI connected</span></div>
 
 <section id="home" class="page active">
-<div class="grid">
-<div class="card hero"><h2>Make a cartoon episode ✨</h2><p>Write your idea and turn it into scenes. This prototype keeps your characters, story and timeline together so AI image, voice and video services can be connected later.</p><div class="actions"><button class="btn" onclick="show('story')">Create a story</button><button class="btn secondary" onclick="show('characters')">Manage characters</button></div></div>
-<div class="card"><h3>🐾 Characters</h3><p class="muted">2 saved characters</p><strong>Pip & Pogo</strong></div>
-<div class="card"><h3>🎬 Scenes</h3><p class="muted">5 scenes ready</p><strong>Episode 01</strong></div>
-<div class="card"><h3>🎙️ Voices</h3><p class="muted">Voice assignments</p><strong>Pip • Pogo • Narrator</strong></div>
-</div></section>
+  <div class="grid">
+    <div class="card hero"><h2>Make a cartoon episode ✨</h2><p class="muted">Create a story idea, let AI turn it into five scenes, then continue to images, voices, and video.</p><button class="btn" onclick="show('story')">Create a story</button></div>
+    <div class="card"><h3>🐾 Characters</h3><strong>Pip & Pogo</strong></div>
+    <div class="card"><h3>🎬 Storyboard</h3><strong>5 AI scenes</strong></div>
+    <div class="card"><h3>🤖 AI</h3><strong>OpenAI via Cloudflare</strong></div>
+  </div>
+</section>
 
-<section id="characters" class="page"><div class="grid">
-<div class="card"><div class="character"><div class="avatar">🐶</div><div><h3>Pip</h3><p class="muted">Main character</p></div></div><div class="field"><label>Character description</label><textarea id="pipDesc">A cheerful, curious cartoon puppy who loves adventures.</textarea></div><button class="btn small" onclick="toast('Pip character saved')">Save Pip</button></div>
-<div class="card"><div class="character"><div class="avatar">🐻</div><div><h3>Pogo</h3><p class="muted">Best friend</p></div></div><div class="field"><label>Character description</label><textarea id="pogoDesc">A funny, kind cartoon bear who is always ready to help Pip.</textarea></div><button class="btn small" onclick="toast('Pogo character saved')">Save Pogo</button></div>
-<div class="card"><h3>Add a character</h3><p class="muted">Create another recurring character.</p><div class="field"><label>Name</label><input placeholder="Character name"></div><div class="field"><label>Description</label><input placeholder="Appearance and personality"></div><button class="btn" onclick="toast('Character added to your project')">＋ Add Character</button></div>
-</div></section>
+<section id="characters" class="page">
+  <div class="grid">
+    <div class="card"><h3>🐶 Pip</h3><p class="muted">A cheerful, curious cartoon puppy who loves adventures.</p></div>
+    <div class="card"><h3>🐻 Pogo</h3><p class="muted">A funny, kind cartoon bear who is always ready to help Pip.</p></div>
+  </div>
+</section>
 
-<section id="story" class="page"><div class="card"><h2>Story Creator</h2><p class="muted">Describe the episode. The scene planner will turn it into a storyboard.</p>
-<div class="field"><label>Episode title</label><input id="episodeTitle" value="Pip & Pogo and the Mysterious Box"></div>
-<div class="field"><label>Your story idea</label><textarea id="storyText">Pip and Pogo go to the park. They discover a mysterious box under a tree. They open it together and find a funny surprise inside.</textarea></div>
-<div class="actions"><button class="btn" onclick="generateScenes()">✨ Generate 5 scenes</button><button class="btn secondary" onclick="toast('Draft saved')">Save draft</button></div></div></section>
+<section id="story" class="page">
+  <div class="card">
+    <h2>AI Story Creator</h2>
+    <p class="muted">Describe an episode and AI will create five kid-friendly cartoon scenes.</p>
+    <div class="field"><label>Episode title</label><input id="episodeTitle" value="Pip & Pogo and the Mysterious Box"></div>
+    <div class="field"><label>Your story idea</label><textarea id="storyText">Pip and Pogo go to the park. They discover a mysterious box under a tree. They open it together and find a funny surprise inside.</textarea></div>
+    <div class="actions">
+      <button id="generateBtn" class="btn" onclick="generateAIStory()">✨ Generate 5 AI scenes</button>
+      <button class="btn secondary" onclick="toast('Draft saved')">Save draft</button>
+    </div>
+    <div id="apiError" class="error"></div>
+  </div>
+</section>
 
-<section id="scenes" class="page"><div class="card"><h2>Storyboard</h2><p class="muted">Edit each scene, then generate visuals and animation.</p><div id="sceneList"></div></div></section>
+<section id="scenes" class="page">
+  <div class="card"><h2>Storyboard</h2><p class="muted">These scenes are generated from your story idea.</p><div id="sceneList"></div></div>
+</section>
 
-<section id="voices" class="page"><div class="card"><h2>Character Voices</h2><div class="field"><label>Pip voice</label><select><option>Bright & playful</option><option>Warm storyteller</option><option>Funny & energetic</option></select></div><div class="field"><label>Pogo voice</label><select><option>Friendly & deep</option><option>Goofy & playful</option><option>Warm & gentle</option></select></div><div class="field"><label>Narrator</label><select><option>Adventure narrator</option><option>Calm storyteller</option></select></div><button class="btn" onclick="toast('Voice settings saved')">Save voices</button></div></section>
+<section id="voices" class="page">
+  <div class="card"><h2>Character Voices</h2><p class="muted">Voice generation will be connected next.</p></div>
+</section>
 
-<section id="video" class="page"><div class="grid"><div class="card hero"><h2>Video Timeline</h2><p class="muted">Your episode will appear here after scenes are generated.</p><div class="timeline" id="timeline"></div><div class="actions"><button class="btn" onclick="toast('Video render queued — connect a video API to render the MP4')">🎞️ Render video</button><button class="btn secondary" onclick="toast('Export settings opened')">Export settings</button></div></div><div class="card"><h3>Format</h3><select class="field" style="width:100%;padding:11px;border:1px solid var(--line);border-radius:10px"><option>9:16 • TikTok / Shorts</option><option>16:9 • YouTube</option><option>1:1 • Social</option></select></div><div class="card"><h3>Captions</h3><p class="muted">Automatic captions can be added when the voice track is generated.</p><button class="btn secondary" onclick="toast('Captions enabled')">Enable captions</button></div></div></section>
-</main></div><div id="toast" class="toast"></div>
+<section id="video" class="page">
+  <div class="card"><h2>Video Timeline</h2><p class="muted">Image, voice, and animation generation will be connected after the story workflow is tested.</p></div>
+</section>
+</main>
+</div>
+<div id="toast" class="toast"></div>
+
 <script>
-const titles={home:'Dashboard',characters:'Characters',story:'Story Creator',scenes:'Storyboard',voices:'Voices',video:'Video Timeline'};
-function show(id,btn){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.getElementById('title').textContent=titles[id];document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active');if(id==='scenes')renderScenes();if(id==='video')renderTimeline()}
+const API_URL="https://pip-pogo-api.musadiq-ariz.workers.dev";
+const titles={home:"Dashboard",characters:"Characters",story:"Story Creator",scenes:"Storyboard",voices:"Voices",video:"Video Timeline"};
 let scenes=[
-['Scene 1','Pip and Pogo walk into the sunny park.','🐶 🐻'],
-['Scene 2','They notice a mysterious box underneath a big tree.','🌳 📦'],
-['Scene 3','Pip and Pogo carefully open the box together.','📦 ✨'],
-['Scene 4','A funny surprise jumps out and makes them laugh.','😂 🎉'],
-['Scene 5','The friends head home happily after their adventure.','🏠 🐶 🐻']];
-function renderScenes(){document.getElementById('sceneList').innerHTML=scenes.map((s,i)=>`<div class="card scene"><div class="thumb">${s[2]}</div><div><h3>${s[0]}</h3><div class="muted">${s[1]}</div><div class="status" id="st${i}">Image: not generated • Animation: not generated</div></div><div class="actions"><button class="btn small" onclick="generateImage(${i})">🖼️ Image</button><button class="btn small secondary" onclick="animateScene(${i})">🎥 Animate</button></div></div>`).join('')}
-function generateScenes(){renderScenes();show('scenes');toast('5 scenes created from your story')}
-function generateImage(i){document.getElementById('st'+i).textContent='Image: generation requested • Animation: not generated';toast('Scene '+(i+1)+' image request created')}
-function animateScene(i){document.getElementById('st'+i).textContent='Image: ready • Animation: generation requested';toast('Scene '+(i+1)+' animation request created')}
-function renderTimeline(){document.getElementById('timeline').innerHTML=scenes.map((s,i)=>`<div class="clip">${i+1}. ${s[0]}<br><small>5 sec</small></div>`).join('')}
-function toast(msg){let t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(window.tt);window.tt=setTimeout(()=>t.style.display='none',2400)}
-renderScenes();renderTimeline();
-</script></body></html>
+"Scene 1: Pip and Pogo walk into the sunny park.",
+"Scene 2: They notice a mysterious box underneath a big tree.",
+"Scene 3: Pip and Pogo carefully open the box together.",
+"Scene 4: A funny surprise jumps out and makes them laugh.",
+"Scene 5: The friends head home happily after their adventure."
+];
+
+function show(id,btn){
+  document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  document.getElementById("title").textContent=titles[id];
+  document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));
+  if(btn)btn.classList.add("active");
+  if(id==="scenes")renderScenes();
+}
+
+function renderScenes(){
+  document.getElementById("sceneList").innerHTML=scenes.map((s,i)=>`
+    <div class="card scene">
+      <div class="thumb">${["🌳","📦","✨","😂","🏠"][i]||"🎬"}</div>
+      <div><h3>Scene ${i+1}</h3><div>${escapeHtml(s.replace(/^Scene\\s*\\d+\\s*:\\s*/i,""))}</div><div class="status">Ready for image generation</div></div>
+    </div>`).join("");
+}
+
+function extractText(data){
+  if(data.output_text) return data.output_text;
+  if(Array.isArray(data.output)){
+    return data.output.flatMap(item=>Array.isArray(item.content)?item.content:[])
+      .map(c=>c.text||c.output_text||"").filter(Boolean).join("\\n");
+  }
+  return "";
+}
+
+async function generateAIStory(){
+  const btn=document.getElementById("generateBtn");
+  const err=document.getElementById("apiError");
+  const idea=document.getElementById("storyText").value.trim();
+  const title=document.getElementById("episodeTitle").value.trim();
+  if(!idea){toast("Please enter a story idea");return}
+
+  btn.disabled=true;
+  btn.textContent="✨ Generating...";
+  err.style.display="none";
+
+  try{
+    const prompt=`Episode title: ${title}. Story idea: ${idea}
+Return exactly 5 short cartoon scene descriptions for children.
+Put each scene on its own line in this exact format:
+Scene 1: ...
+Scene 2: ...
+Scene 3: ...
+Scene 4: ...
+Scene 5: ...
+Do not add any other text.`;
+
+    const r=await fetch(API_URL,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({prompt})
+    });
+
+    const data=await r.json();
+    if(!r.ok) throw new Error(data?.error?.message || "API request failed");
+
+    const text=extractText(data);
+    const found=text.split(/\n+/).map(x=>x.trim()).filter(x=>/^Scene\s*[1-5]\s*:/i.test(x));
+    if(found.length<5) throw new Error("AI responded, but the 5 scenes could not be read.");
+
+    scenes=found.slice(0,5);
+    renderScenes();
+    show("scenes");
+    toast("5 AI scenes generated!");
+  }catch(e){
+    err.textContent="AI error: "+e.message;
+    err.style.display="block";
+  }finally{
+    btn.disabled=false;
+    btn.textContent="✨ Generate 5 AI scenes";
+  }
+}
+
+function escapeHtml(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\\"":"&quot;","'":"&#039;"}[m]))}
+function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.style.display="block";clearTimeout(window.tt);window.tt=setTimeout(()=>t.style.display="none",2500)}
+renderScenes();
+</script>
+</body>
+</html>
