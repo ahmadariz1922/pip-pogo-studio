@@ -174,7 +174,11 @@ Do not add any other text.`;
   }
 }
 
-function escapeHtml(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\\"":"&quot;","'":"&#039;"}[m]))}
+function escapeHtml(s){
+  const div=document.createElement("div");
+  div.textContent=s;
+  return div.innerHTML;
+}
 function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.style.display="block";clearTimeout(window.tt);window.tt=setTimeout(()=>t.style.display="none",2500)}
 renderScenes();
 </script>
