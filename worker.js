@@ -157,6 +157,7 @@ Pip: bright blue baby bird, light-blue fluffy belly, huge round blue-and-black e
 Pogo: cute brown-and-white puppy, floppy brown ears, white muzzle and chest, large warm brown eyes, small black nose, red collar, round gold tag, playful friendly face.
 
 Keep Pip and Pogo visually consistent from scene to scene: same colors, proportions, face shapes, eyes, and accessories.
+Continuity: This story takes place outdoors in the same sunny park under the same large shady tree. Keep the same park, tree, lighting, characters, box, and surroundings across consecutive scenes unless the scene explicitly says the location changes. Never move the scene indoors unless the story explicitly requests it.
 
 Scene: ${scene}
 
