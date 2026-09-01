@@ -158,7 +158,7 @@ Pogo: cute brown-and-white puppy, floppy brown ears, white muzzle and chest, lar
 
 Keep Pip and Pogo visually consistent from scene to scene: same colors, proportions, face shapes, eyes, and accessories.
 Continuity: This story takes place outdoors in the same sunny park under the same large shady tree. Keep the same park, tree, lighting, characters, box, and surroundings across consecutive scenes unless the scene explicitly says the location changes. Never move the scene indoors unless the story explicitly requests it.
-
+Object continuity: Keep important story objects exactly consistent across consecutive scenes. The mysterious box must keep the same color, shape, decorations, and size. Any hat or surprise that appears from the box must keep the same design, colors, shape, and details in every later scene unless the story explicitly says it changes.
 Scene: ${scene}
 
 Style: bright polished 3D children's animation, warm soft lighting, expressive faces, colorful detailed environment, ages 3-10. No text, no captions, no logos, no watermark.`;
