@@ -192,6 +192,51 @@ function extractText(data){
   }
   return "";
 }
+  async function generateVoice(character){
+  const textId = character === "pogo" ? "pogoVoiceText" : "pipVoiceText";
+  const audioId = character === "pogo" ? "pogoAudio" : "pipAudio";
+  const err = document.getElementById("voiceError");
+
+  const text = document.getElementById(textId).value.trim();
+  if(!text){
+    toast("Please enter a voice line");
+    return;
+  }
+
+  err.style.display="none";
+
+  try{
+    const r = await fetch(API_URL,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        action:"voice",
+        character,
+        text
+      })
+    });
+
+    if(!r.ok){
+      const msg = await r.text();
+      throw new Error(msg || "Voice generation failed");
+    }
+
+    const blob = await r.blob();
+    const audio = document.getElementById(audioId);
+
+    if(audio.src){
+      URL.revokeObjectURL(audio.src);
+    }
+
+    audio.src = URL.createObjectURL(blob);
+    audio.style.display="block";
+    audio.play();
+
+  }catch(e){
+    err.textContent="Voice error: " + e.message;
+    err.style.display="block";
+  }
+}
 
 async function generateAIStory(){
   const btn=document.getElementById("generateBtn");
