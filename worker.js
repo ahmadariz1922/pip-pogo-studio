@@ -135,6 +135,7 @@ export default {
       if (action === "image") {
 
         const scene = String(body.scene || "").trim();
+        const previousImage = body.previousImage || null;
 
         if (!scene) {
 
@@ -163,39 +164,73 @@ Scene: ${scene}
 
 Style: bright polished 3D children's animation, warm soft lighting, expressive faces, colorful detailed environment, ages 3-10. No text, no captions, no logos, no watermark.`;
 
-        const response = await fetch(
+        let response;
 
-          "https://api.openai.com/v1/images/generations",
+if (previousImage) {
+  const match = previousImage.match(
+    /^data:image\/(png|jpeg|webp);base64,(.+)$/
+  );
 
-          {
+  if (!match) {
+    return json(
+      { error: { message: "Previous scene image is invalid." } },
+      400,
+      headers
+    );
+  }
 
-            method: "POST",
+  const bytes = Uint8Array.from(
+    atob(match[2]),
+    c => c.charCodeAt(0)
+  );
 
-            headers: {
+  const form = new FormData();
 
-              "Authorization": `Bearer ${env.OPENAI_API_KEY}`,
+  form.append("model", "gpt-image-2");
+  form.append(
+    "prompt",
+    prompt + "\nUse the attached previous scene as the visual reference. Preserve the exact appearance of Pip, Pogo, recurring objects, environment, colors, and animation style while creating the new scene."
+  );
+  form.append(
+    "image",
+    new Blob([bytes], { type: `image/${match[1]}` }),
+    "previous-scene.png"
+  );
+  form.append("size", "1536x1024");
+  form.append("quality", "medium");
+  form.append("output_format", "png");
 
-              "Content-Type": "application/json"
+  response = await fetch(
+    "https://api.openai.com/v1/images/edits",
+    {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${env.OPENAI_API_KEY}`
+      },
+      body: form
+    }
+  );
 
-            },
+} else {
 
-            body: JSON.stringify({
-
-              model: "gpt-image-2",
-
-              prompt,
-
-              size: "1536x1024",
-
-              quality: "medium",
-
-              output_format: "png"
-
-            })
-
-          }
-
-        );
+  response = await fetch(
+    "https://api.openai.com/v1/images/generations",
+    {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${env.OPENAI_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "gpt-image-2",
+        prompt,
+        size: "1536x1024",
+        quality: "medium",
+        output_format: "png"
+      })
+    }
+  );
+}
 
         const data = await response.json();
 
