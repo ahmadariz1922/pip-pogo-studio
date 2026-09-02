@@ -79,9 +79,27 @@
 </section>
 
 <section id="voices" class="page">
-  <div class="card"><h2>Character Voices</h2><p class="muted">Voice generation will be connected next.</p></div>
-</section>
+  <div class="card">
+    <h2>🎙️ Character Voices</h2>
+    <p class="muted">Generate and test Pip & Pogo's voices.</p>
 
+    <div class="field">
+      <label>Pip's line</label>
+      <textarea id="pipVoiceText">Hi! I'm Pip! Are you ready for an adventure?</textarea>
+      <button class="btn" onclick="generateVoice('pip')">▶️ Generate Pip Voice</button>
+      <audio id="pipAudio" controls style="display:none;width:100%;margin-top:12px"></audio>
+    </div>
+
+    <div class="field">
+      <label>Pogo's line</label>
+      <textarea id="pogoVoiceText">Hi Pip! Let's go discover something amazing!</textarea>
+      <button class="btn" onclick="generateVoice('pogo')">▶️ Generate Pogo Voice</button>
+      <audio id="pogoAudio" controls style="display:none;width:100%;margin-top:12px"></audio>
+    </div>
+
+    <div id="voiceError" class="error"></div>
+  </div>
+</section>
 <section id="video" class="page">
   <div class="card"><h2>Video Timeline</h2><p class="muted">Image, voice, and animation generation will be connected after the story workflow is tested.</p></div>
 </section>
