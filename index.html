@@ -141,7 +141,11 @@ async function generateSceneImage(i){
     const r=await fetch(API_URL,{
       method:"POST",
       headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({action:"image",scene:scenes[i]})
+      body:JSON.stringify({
+  action:"image",
+  scene:scenes[i],
+  previousImage:i>0 ? sceneImages[i-1] : null
+})
     });
 
     const data=await r.json();
