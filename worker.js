@@ -55,13 +55,9 @@ export default {
         const voice = character === "pogo" ? "ash" : "coral";
 
         const instructions =
-
-          character === "pogo"
-
-            ? "Speak like a warm, playful, friendly cartoon puppy for children ages 3 to 10. Sound kind, energetic, expressive, and fun."
-
-            : "Speak like a cheerful, curious, energetic young cartoon bird for children ages 3 to 10. Sound bright, playful, expressive, and friendly.";
-
+  character === "pogo"
+    ? "Use a very young, cute, childlike cartoon voice for Pogo, a little puppy. Make the delivery light, playful, innocent, excited, sweet, and energetic. Use a youthful higher-pitched speaking style and expressive kid-cartoon rhythm. Do not sound like a mature adult."
+    : "Use a very young, cute, childlike cartoon voice for Pip, a little blue bird. Make the delivery bright, innocent, bubbly, curious, sweet, and energetic. Use a youthful higher-pitched speaking style and expressive kid-cartoon rhythm. Do not sound like a mature adult.";
         const response = await fetch(
 
           "https://api.openai.com/v1/audio/speech",
