@@ -52,7 +52,7 @@ export default {
 
         }
 
-        const voice = character === "pogo" ? "ash" : "coral";
+        const voice = character === "pogo" ? "ash" : "shimmer";
 
         const instructions =
   character === "pogo"
