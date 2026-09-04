@@ -52,7 +52,9 @@ export default {
 
         }
 
-       const elevenVoiceId = "6Cs4u99fX1kF82ocdChh";
+       const elevenVoiceId = character === "pogo"
+  ? "tsY8jtj6REygstsbk5Ib"
+  : "6Cs4u99fX1kF82ocdChh";
         const elevenResponse = await fetch(
   `https://api.elevenlabs.io/v1/text-to-speech/${elevenVoiceId}?output_format=mp3_44100_128`,
   {
