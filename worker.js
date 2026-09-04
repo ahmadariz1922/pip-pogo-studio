@@ -52,6 +52,40 @@ export default {
 
         }
 
+       const elevenVoiceId = "uyv82ARGSiPieXDxTMOc";
+        const elevenResponse = await fetch(
+  `https://api.elevenlabs.io/v1/text-to-speech/${elevenVoiceId}?output_format=mp3_44100_128`,
+  {
+    method: "POST",
+    headers: {
+      "xi-api-key": env.ELEVENLABS_API_KEY,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      text,
+      model_id: "eleven_flash_v2_5"
+    })
+  }
+);
+
+if (!elevenResponse.ok) {
+  const errorText = await elevenResponse.text();
+  return json(
+    { error: { message: errorText || "ElevenLabs voice generation failed." } },
+    elevenResponse.status,
+    headers
+  );
+}
+
+const elevenAudioBuffer = await elevenResponse.arrayBuffer();
+
+return new Response(elevenAudioBuffer, {
+  status: 200,
+  headers: {
+    ...headers,
+    "Content-Type": "audio/mpeg"
+  }
+});
         const voice = character === "pogo" ? "ash" : "shimmer";
 
         const instructions =
