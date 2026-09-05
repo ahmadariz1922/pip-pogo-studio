@@ -142,12 +142,52 @@ function renderScenes(){
           <button class="btn" id="imgBtn-${i}" onclick="generateSceneImage(${i})">
             ${sceneImages[i] ? "🎨 Regenerate image" : "🎨 Generate image"}
           </button>
+          <button class="btn secondary" onclick="playSceneVoice(${i},'pip')">🐦 Play Pip</button>
+<button class="btn secondary" onclick="playSceneVoice(${i},'pogo')">🐶 Play Pogo</button>
         </div>
       </div>
     </div>`).join("");
 }
+function getSceneDialogue(sceneText, character){
+  const label = character === "pogo" ? "Pogo:" : "Pip:";
+  const other = character === "pogo" ? null : "| Pogo:";
+  let part = sceneText.split(label)[1] || "";
+  if(other) part = part.split(other)[0];
+  return part.replace(/^["“”\s]+|["“”\s]+$/g,"").trim();
+}
+async function playSceneVoice(i, character){
+  const text = getSceneDialogue(scenes[i], character);
 
-async function generateSceneImage(i){
+  if(!text){
+    toast("No dialogue found");
+    return;
+  }
+
+  try{
+    const r = await fetch(API_URL,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        action:"voice",
+        character,
+        text
+      })
+    });
+
+    if(!r.ok){
+      const msg = await r.text();
+      throw new Error(msg || "Voice generation failed");
+    }
+
+    const blob = await r.blob();
+    const audio = new Audio(URL.createObjectURL(blob));
+    audio.play();
+
+  }catch(e){
+    toast("Voice error");
+  }
+}
+ async function generateSceneImage(i){
   const btn=document.getElementById(`imgBtn-${i}`);
   const status=document.getElementById(`status-${i}`);
   const thumb=document.getElementById(`thumb-${i}`);
