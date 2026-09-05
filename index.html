@@ -251,14 +251,15 @@ async function generateAIStory(){
 
   try{
     const prompt=`Episode title: ${title}. Story idea: ${idea}
-Return exactly 5 short cartoon scene descriptions for children.
-Put each scene on its own line in this exact format:
-Scene 1: ...
-Scene 2: ...
-Scene 3: ...
-Scene 4: ...
-Scene 5: ...
-Do not add any other text.`;
+Return exactly 5 cartoon scenes.
+Each scene must stay on ONE line and include: a short visual description, one Pip dialogue line, and one Pogo dialogue line.
+Use this exact format:
+Scene 1: [visual description] | Pip: [what Pip says] | Pogo: [what Pogo says]
+Scene 2: [visual description] | Pip: [what Pip says] | Pogo: [what Pogo says]
+Scene 3: [visual description] | Pip: [what Pip says] | Pogo: [what Pogo says]
+Scene 4: [visual description] | Pip: [what Pip says] | Pogo: [what Pogo says]
+Scene 5: [visual description] | Pip: [what Pip says] | Pogo: [what Pogo says]
+Keep the dialogue short, natural, cheerful and appropriate for children ages 3–10. Do not add any other text.`;
 
     const r=await fetch(API_URL,{
       method:"POST",
